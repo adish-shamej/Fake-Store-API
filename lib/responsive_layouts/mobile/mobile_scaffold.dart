@@ -1,15 +1,12 @@
 import 'dart:async';
 
-import 'package:fake_store/constants.dart';
 import 'package:fake_store/controllers/data_controller.dart';
 import 'package:fake_store/controllers/search_helper.dart';
 import 'package:fake_store/responsive_layouts/mobile/itemdetails_mobile.dart';
-import 'package:fake_store/utils/grids.dart';
+import 'package:fake_store/utils/newDrawer.dart';
 import 'package:fake_store/utils/tiles.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
-
 import 'package:get/get.dart';
-
 import 'package:iconsax/iconsax.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
@@ -126,11 +123,9 @@ class _MobileScaffolState extends State<MobileScaffol> {
             ),
           ),
         )),
-
         backgroundColor: Colors.transparent,
         elevation: 0,
         actions: [
-
           Padding(
               padding: const EdgeInsets.only(right: 5.0, bottom: 14, top: 14),
               child: NeumorphicButton(
@@ -162,7 +157,7 @@ class _MobileScaffolState extends State<MobileScaffol> {
               )),
         ],
       ),
-      drawer: myDrawer,
+      drawer: newDrawer(),
       body: LiquidPullToRefresh(
         springAnimationDurationInMilliseconds: 1500,
         animSpeedFactor: 2,
@@ -185,44 +180,38 @@ class _MobileScaffolState extends State<MobileScaffol> {
                         child: CircularProgressIndicator(),
                       )
                     : ListView.builder(
-                            physics: const BouncingScrollPhysics(),
-                            controller: _scrollController,
-                            itemCount: itemController.dataModels.length,
-                            itemBuilder: (context, index) {
-                              final itemdata = itemController.dataModels[index];
-                              return Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 10, right: 10, top: 10),
-                                child: InkWell(
-                                  onTap: () {
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                ItemDetailsView(
-                                                  titlee:
-                                                      itemdata.title.toString(),
-                                                  productId: itemdata.id,
-                                                  description: itemdata
-                                                      .description
-                                                      .toString(),
-                                                  image:
-                                                      itemdata.image.toString(),
-                                                  price:
-                                                      itemdata.price.toString(),
-                                                  rating: itemdata.rating!.rate
-                                                      .toString(),
-                                                  category: itemdata.category
-                                                      .toString(),
-                                                )));
-                                  },
-                                  child: MyTiles(
-                                      image: itemdata.image.toString(),
-                                      title: itemdata.title.toString(),
-                                      price: itemdata.price.toString(),
-                                      rate: itemdata.rating!.rate.toString()),
-                                ),
-                              );
-                            });
+                        physics: const BouncingScrollPhysics(),
+                        controller: _scrollController,
+                        itemCount: itemController.dataModels.length,
+                        itemBuilder: (context, index) {
+                          final itemdata = itemController.dataModels[index];
+                          return Padding(
+                            padding: const EdgeInsets.only(
+                                left: 10, right: 10, top: 10),
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => ItemDetailsView(
+                                          titlee: itemdata.title.toString(),
+                                          productId: itemdata.id,
+                                          description:
+                                              itemdata.description.toString(),
+                                          image: itemdata.image.toString(),
+                                          price: itemdata.price.toString(),
+                                          rating:
+                                              itemdata.rating!.rate.toString(),
+                                          category:
+                                              itemdata.category.toString(),
+                                        )));
+                              },
+                              child: MyTiles(
+                                  image: itemdata.image.toString(),
+                                  title: itemdata.title.toString(),
+                                  price: itemdata.price.toString(),
+                                  rate: itemdata.rating!.rate.toString()),
+                            ),
+                          );
+                        });
               })),
         ),
       ),

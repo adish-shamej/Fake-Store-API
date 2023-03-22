@@ -10,7 +10,7 @@ var myAppBar = AppBar(
 
 var myDrawer = Drawer(
   child: Column(
-    children: const [
+    children: [
       DrawerHeader(
           child: Icon(
         Icons.favorite,
@@ -28,6 +28,28 @@ var myDrawer = Drawer(
         leading: Icon(Iconsax.category),
         title: Text("C A T E G O R I E S"),
       ),
+      Spacer(),
+      ListTile(
+        onTap: () async {
+          // FirebaseAuth.instance.signOut();
+          // SharedPreferences userData = await SharedPreferences.getInstance();
+          // await userData.clear();
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => SecondRoute()),
+          // );
+        },
+        leading: Icon(Iconsax.logout),
+        title: Text("L O G O U T"),
+      ),
     ],
   ),
 );
+
+h(double h) {
+  return SizedBox(height: h);
+}
+
+w(double w) {
+  return SizedBox(width: w);
+}
