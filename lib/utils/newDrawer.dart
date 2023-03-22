@@ -15,7 +15,7 @@ class _newDrawerState extends State<newDrawer> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      //gg
+      //g
       child: Column(
         children: [
           DrawerHeader(child: Image.asset("assets/images/splash.jpeg")),
