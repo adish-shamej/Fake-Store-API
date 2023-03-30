@@ -1,4 +1,5 @@
 import 'package:fake_store/responsive_layouts/mobile/Login.dart';
+import 'package:fake_store/responsive_layouts/mobile/profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
@@ -19,7 +20,13 @@ class _newDrawerState extends State<newDrawer> {
       child: Column(
         children: [
           DrawerHeader(child: Image.asset("assets/images/splash.jpeg")),
-          const ListTile(
+          ListTile(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Profile()),
+              );
+            },
             leading: Icon(Iconsax.user),
             title: Text("U S E R"),
           ),

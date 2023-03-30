@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fake_store/constants.dart';
 import 'package:fake_store/responsive_layouts/mobile/mobile_scaffold.dart';
 import 'package:fake_store/utils/authHelper.dart';
@@ -12,11 +13,19 @@ class Signup extends StatefulWidget {
 }
 
 class _SignupState extends State<Signup> {
+  TextEditingController _nameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passController = TextEditingController();
   TextEditingController _addressController = TextEditingController();
   TextEditingController _PhoneController = TextEditingController();
   bool tap = false;
+
+  Future<void> uploadingData(
+      String _name, String _phone, String _address, String _email) async {
+    await FirebaseFirestore.instance.collection("users").add(
+        {'name': _name, 'phone': _phone, 'address': _address, 'email': _email});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,6 +51,21 @@ class _SignupState extends State<Signup> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 // mainAxisSize: MainAxisSize.min,
                 children: [
+                  TextFormField(
+                    controller: _nameController,
+                    decoration: InputDecoration(
+                      filled: true,
+                      labelText: "Name",
+                      labelStyle:
+                          const TextStyle(color: Colors.black26, fontSize: 15),
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: const BorderSide(),
+                      ),
+                    ),
+                  ),
+                  h(10),
                   TextFormField(
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
@@ -119,8 +143,15 @@ class _SignupState extends State<Signup> {
                                   password: _passController.text)
                               .then((result) {
                             if (result == null) {
+                              uploadingData(
+                                  _nameController.text,
+                                  _PhoneController.text,
+                                  _addressController.text,
+                                  _emailController.text);
                               setState(() {
                                 setSharedPreference('LOGIN', "true");
+                                setSharedPreference(
+                                    'EMAIL', _emailController.text);
                                 tap = false;
                               });
                               Navigator.pushReplacement(

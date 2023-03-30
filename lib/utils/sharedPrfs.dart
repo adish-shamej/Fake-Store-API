@@ -2,6 +2,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 final ID = "ID";
 final LOGIN = "LOGIN";
+final EMAIL = "EMAIL";
 
 Future setSharedPreference(key, data) async {
   SharedPreferences prfs = await SharedPreferences.getInstance();
