@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fake_store/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -10,139 +11,104 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  List<String> docIDs = [];
+  final currentUser = FirebaseAuth.instance;
+
   var uid;
   var name;
   var phone;
-  // CollectionReference _collectionRef =
-  //     FirebaseFirestore.instance.collection('users');
-  //
-  // Future<void> getData() async {
-  //   // Get docs from collection reference
-  //   QuerySnapshot querySnapshot = await _collectionRef.get();
-  //
-  //   // Get data from docs and convert map to List
-  //   final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
-  //   print("```````````");
-  //   print(allData);
+  final user = FirebaseAuth.instance.currentUser;
+
+  // Future getDocIDs() async {
+  //   await FirebaseFirestore.instance
+  //       .collection('users')
+  //       .get()
+  //       .then((snapshot) => snapshot.docs.forEach((element) {
+  //             print(element.reference);
+  //             docIDs.add(element.reference.id);
+  //           }));
   // }
+
+  _fetch() async {
+    final currentUser = FirebaseAuth.instance;
+    await FirebaseFirestore.instance
+        .collection('users')
+        .where('email', isEqualTo: currentUser.currentUser!.email)
+        .snapshots();
+  }
 
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   String myId = '';
   String myUsername = '';
   String myUrlAvatar = '';
 
-  // void _getdata() async {
-  //   User user = _firebaseAuth.currentUser;
-  //   FirebaseFirestore.instance
-  //       .collection('users')
-  //       .doc(user.uid)
-  //       .snapshots()
-  //       .listen((userData) {
-  //
-  //     setState(() {
-  //       myId = userData.data()['uid'];
-  //       myUsername = userData.data()['name'];
-  //       myUrlAvatar = userData.data()['avatarurl'];
-  //
-  //     });
-  //     )};
-
   @override
   void initState() {
+    _fetch();
     super.initState();
-    getData();
   }
-  // Future<void> getUserData() async {
-  //   User? user = _firebaseAuth.currentUser;
-  //   FirebaseFirestore.instance
-  //       .collection('users')
-  //       .doc(user?.uid)
-  //       .snapshots()
-  //       .listen((userData) {
-  //     setState(() {
-  //       myId = userData.data()!['uid'];
-  //       myUsername = userData.data()!['name'];
-  //     });
-  //     print("```````````````");
-  //     print(myId);
-  //     print("```````````````");
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(), body: Text(name.toString()));
+    return Scaffold(
+        appBar: AppBar(),
+        body: StreamBuilder(
+          stream: FirebaseFirestore.instance
+              .collection('users')
+              .where('email', isEqualTo: currentUser.currentUser!.email)
+              .snapshots(),
+          builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.hasData) {
+              return Center(
+                child: ListView.builder(
+                    itemCount: snapshot.data!.docs.length,
+                    itemBuilder: (context, i) {
+                      var data = snapshot.data!.docs[i];
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 15),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Image.asset("assets/images/noDp.png", height: 80),
+                            h(15),
+                            Text(
+                              "Name : " + data["name"],
+                              style: const TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.w600),
+                            ),
+                            h(10),
+                            Text(
+                              "Phone : " + data["phone"],
+                              style: const TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.w600),
+                            ),
+                            h(10),
+                            Text(
+                              "Email : " + data["email"],
+                              style: const TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.w600),
+                            ),
+                            h(10),
+                            Text(
+                              "Address : " + data["address"],
+                              style: const TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.w600),
+                            ),
+                            h(10),
+                          ],
+                        ),
+                      );
+                    }),
+              );
+            } else {
+              return const CircularProgressIndicator();
+            }
+          },
+        ));
   }
 
   list(int index) {
     return const Text("");
-  }
-
-  // Future getMessagePathData() async {
-  //   final User? user = _ath.currentUser;
-  //   setState(() {
-  //     uid = user!.uid;
-  //   });
-  //
-  //   var dataa =
-  //       await FirebaseFirestore.instance.collection('users').doc(uid).get();
-  //   Map<String, dynamic> userData = dataa as Map<String, dynamic>;
-  //   setState(() {
-  //     name = userData['name'];
-  //   });
-  //   print("`````````````````");
-  //   print(name);
-  //   print("`````````````````");
-  //
-  //   // setState(() {
-  //   //   name = dataa.data()['name'];
-  //   //   // name = dataa.name = snapshot.get('name');
-  //   //   phone = snapshot.get('phone');
-  //   // });
-  // }
-
-  void getData() async {
-    User? user = await FirebaseAuth.instance.currentUser;
-    setState(() {
-      uid = user!.uid;
-    });
-
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(uid)
-        .get()
-        .then((DocumentSnapshot documentSnapshot) {
-      if (documentSnapshot.exists) {
-        print('Document ID: ${documentSnapshot.id}');
-      } else {
-        print('Document does not exist on the database');
-      }
-    });
-
-    // try {
-    //   DocumentSnapshot<Map<String, dynamic>> snapshot =
-    //       await FirebaseFirestore.instance.collection('users').doc(uid).get();
-    //   if (snapshot.exists) {
-    //     Map<String, dynamic> userData = snapshot.data()!;
-    //     String name = userData['name'];
-    //     String phoneNumber = userData['phone'];
-    //     print('Name: $name');
-    //     print('Phone Number: $phoneNumber');
-    //   } else {
-    //     print('User with ID $uid not found.');
-    //   }
-    // } catch (e) {
-    //   print('Error getting user details: $e');
-    // }
-
-    // var vari =
-    //     FirebaseFirestore.instance.collection("users").doc(user!.uid).get();
-    // Map<String, dynamic> userData = vari as Map<String, dynamic>;
-    //
-    // setState(() {
-    //   name = userData['name'];
-    // });
   }
 
   final FirebaseAuth _ath = FirebaseAuth.instance;
