@@ -50,6 +50,9 @@ dependencies:
   firebase_core_web:
   firebase_core_platform_interface:
 
+  geolocator:
+  geocoding:
+
 
 
 dev_dependencies:
