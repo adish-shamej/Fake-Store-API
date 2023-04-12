@@ -45,9 +45,6 @@ class _splashScreenState extends State<splashScreen> {
 
   _loadWidget() async {
     var token = await getSharedPreference(LOGIN);
-    print("````````token````````");
-    print(token);
-    print("````````token````````");
     return Timer(Duration(seconds: 2),
         token.toString() == "null" ? navigationLogin : navigationHome);
   }

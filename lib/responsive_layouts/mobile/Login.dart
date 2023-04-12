@@ -24,9 +24,7 @@ class _LoginState extends State<Login> {
         width: double.infinity,
         decoration: const BoxDecoration(
           image: DecorationImage(
-              image: NetworkImage(
-                  "https://i.pinimg.com/564x/fe/e5/ea/fee5eab30a698c169dc4fd5752359c2c.jpg"),
-              fit: BoxFit.cover),
+              image: AssetImage("assets/images/bg.jpeg"), fit: BoxFit.cover),
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30),

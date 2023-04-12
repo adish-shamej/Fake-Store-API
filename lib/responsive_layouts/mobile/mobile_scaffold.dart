@@ -90,7 +90,7 @@ class _MobileScaffolState extends State<MobileScaffol> {
                   width: 5,
                 ),
                 Text(
-                  "FakeStore",
+                  "Fake Store",
                   style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w600,

@@ -10,6 +10,7 @@ class DataServices {
   List<DataModel> results = [];
 
   var url = "https://fakestoreapi.com/products";
+  // var url = "https://api.escuelajs.co/api/v1/products";
   Future<List<DataModel>> getService({String? query}) async {
     var response = await http.get(Uri.parse(url));
     try {
