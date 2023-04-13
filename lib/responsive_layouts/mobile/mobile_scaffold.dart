@@ -1,13 +1,11 @@
 import 'dart:async';
 
 import 'package:fake_store/controllers/data_controller.dart';
-import 'package:fake_store/controllers/search_helper.dart';
 import 'package:fake_store/responsive_layouts/mobile/itemdetails_mobile.dart';
 import 'package:fake_store/utils/newDrawer.dart';
 import 'package:fake_store/utils/tiles.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 
 class MobileScaffol extends StatefulWidget {
@@ -75,51 +73,25 @@ class _MobileScaffolState extends State<MobileScaffol> {
       backgroundColor: Colors.white.withOpacity(0.95),
       appBar: AppBar(
         toolbarHeight: 80,
+        automaticallyImplyLeading: false,
         title: Center(
             child: Neumorphic(
           style: const NeumorphicStyle(
               lightSource: LightSource.top,
               boxShape: NeumorphicBoxShape.stadium()),
           child: Container(
+            width: double.infinity,
             decoration: BoxDecoration(
                 color: Colors.white, borderRadius: BorderRadius.circular(25)),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const SizedBox(
-                  width: 5,
-                ),
-                Text(
-                  "Fake Store",
-                  style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.grey[800]),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 5.0, bottom: 5),
-                  child: NeumorphicButton(
-                    onPressed: () {
-                      showSearch(context: context, delegate: SearchHelper());
-                      // Get.to(() => SearchItems());
-                    },
-                    style: const NeumorphicStyle(
-                      depth: 4,
-                      intensity: 0.5,
-                      color: Colors.white,
-                      surfaceIntensity: 0.3,
-                      shape: NeumorphicShape.convex,
-                      lightSource: LightSource.topLeft,
-                      shadowDarkColor: Colors.black,
-                      boxShape: NeumorphicBoxShape.circle(),
-                    ),
-                    child: Icon(
-                      Iconsax.search_normal,
-                      color: Colors.grey[800],
-                    ),
-                  ),
-                )
-              ],
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+              child: Text(
+                "Fake Store",
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.grey[800]),
+              ),
             ),
           ),
         )),

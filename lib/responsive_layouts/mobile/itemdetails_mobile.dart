@@ -1,9 +1,8 @@
 import 'package:fake_store/constants.dart';
-import 'package:fake_store/responsive_layouts/mobile/orderPlaced.dart';
-import 'package:fake_store/utils/sharedPrfs.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
-
 import 'package:iconsax/iconsax.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -33,6 +32,34 @@ class ItemDetailsView extends StatefulWidget {
 }
 
 class _ItemDetailsViewState extends State<ItemDetailsView> {
+  final FirebaseAuth _ath = FirebaseAuth.instance;
+
+  var uid;
+  void addCartItem(String itemId, String itemName, String itemPrice,
+      String itemImage) async {
+    final User? user = _ath.currentUser;
+    setState(() {
+      uid = user!.uid;
+    });
+    DatabaseReference cartReference =
+        FirebaseDatabase.instance.ref().child('carts').child(uid);
+    Map<String, dynamic> cartItem = {
+      'itemId': itemId,
+      'itemName': itemName,
+      'itemPrice': itemPrice,
+      'itemImage': itemImage
+    };
+    // setState(() {
+    //   tap = false;
+    // });
+
+    // Add the cart item to the cart reference
+    await cartReference.push().set(cartItem);
+    setState(() {
+      tap = false;
+    });
+  }
+
   void upperCaseFirstLetter() {
     String firstLetterUpper =
         widget.category![0].toUpperCase() + widget.category!.substring(1);
@@ -45,6 +72,8 @@ class _ItemDetailsViewState extends State<ItemDetailsView> {
     upperCaseFirstLetter();
     super.initState();
   }
+
+  bool tap = false;
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
   @override
@@ -122,25 +151,43 @@ class _ItemDetailsViewState extends State<ItemDetailsView> {
       ),
       backgroundColor: Colors.white.withOpacity(0.95),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         child: GestureDetector(
           onTap: () async {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (_) =>  OrderPlaced(pic: widget.image.toString(), title:widget.titlee.toString(), price:widget.price.toString())));
-            await setSharedPreference(ID, widget.productId.toString());
+            print("tapppp");
+            setState(() {
+              tap = true;
+            });
+            addCartItem(
+                widget.productId.toString(),
+                widget.titlee.toString(),
+                widget.price.toString(),
+                widget.image.toString()); // Navigator.push(
+            //     context,
+            //     MaterialPageRoute(
+            //         builder: (_) => OrderPlaced(
+            //             pic: widget.image.toString(),
+            //             title: widget.titlee.toString(),
+            //             price: widget.price.toString())));
+            // await setSharedPreference(ID, widget.productId.toString());
           },
           child: Container(
             alignment: Alignment.center,
             height: 50,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(60), color: Colors.green),
-            child: const Text(
-              "Place Order",
-              style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white),
-            ),
+            child: tap == true
+                ? const SizedBox(
+                    height: 25,
+                    width: 25,
+                    child: CircularProgressIndicator(color: Colors.white))
+                : const Text(
+                    "Add To Cart",
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white),
+                  ),
           ),
         ),
       ),

@@ -1,4 +1,5 @@
 import 'package:fake_store/responsive_layouts/mobile/Login.dart';
+import 'package:fake_store/responsive_layouts/mobile/cartNew.dart';
 import 'package:fake_store/responsive_layouts/mobile/profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +31,13 @@ class _newDrawerState extends State<newDrawer> {
             leading: Icon(Iconsax.user),
             title: Text("U S E R"),
           ),
-          const ListTile(
+          ListTile(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CartNew()),
+              );
+            },
             leading: Icon(Iconsax.shopping_cart),
             title: Text("C A R T"),
           ),
@@ -45,7 +52,6 @@ class _newDrawerState extends State<newDrawer> {
               SharedPreferences userData =
                   await SharedPreferences.getInstance();
               await userData.clear();
-              print("logout");
               Navigator.pushAndRemoveUntil<dynamic>(
                 context,
                 MaterialPageRoute<dynamic>(
