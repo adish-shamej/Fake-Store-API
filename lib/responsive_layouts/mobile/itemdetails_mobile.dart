@@ -1,8 +1,10 @@
 import 'package:fake_store/constants.dart';
+import 'package:fake_store/responsive_layouts/mobile/cartNew.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -152,43 +154,84 @@ class _ItemDetailsViewState extends State<ItemDetailsView> {
       backgroundColor: Colors.white.withOpacity(0.95),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        child: GestureDetector(
-          onTap: () async {
-            print("tapppp");
-            setState(() {
-              tap = true;
-            });
-            addCartItem(
-                widget.productId.toString(),
-                widget.titlee.toString(),
-                widget.price.toString(),
-                widget.image.toString()); // Navigator.push(
-            //     context,
-            //     MaterialPageRoute(
-            //         builder: (_) => OrderPlaced(
-            //             pic: widget.image.toString(),
-            //             title: widget.titlee.toString(),
-            //             price: widget.price.toString())));
-            // await setSharedPreference(ID, widget.productId.toString());
-          },
-          child: Container(
-            alignment: Alignment.center,
-            height: 50,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(60), color: Colors.green),
-            child: tap == true
-                ? const SizedBox(
-                    height: 25,
-                    width: 25,
-                    child: CircularProgressIndicator(color: Colors.white))
-                : const Text(
-                    "Add To Cart",
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white),
-                  ),
-          ),
+        child: Row(
+          children: [
+            Expanded(
+              child: GestureDetector(
+                onTap: () async {
+                  print("tapppp");
+                  setState(() {
+                    tap = true;
+                  });
+                  addCartItem(
+                      widget.productId.toString(),
+                      widget.titlee.toString(),
+                      widget.price.toString(),
+                      widget.image.toString());
+                  Fluttertoast.showToast(
+                      msg: "Item added to cart",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.CENTER,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.blue,
+                      textColor: Colors.white,
+                      fontSize: 16.0
+                  );// Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: (_) => OrderPlaced(
+                  //             pic: widget.image.toString(),
+                  //             title: widget.titlee.toString(),
+                  //             price: widget.price.toString())));
+                  // await setSharedPreference(ID, widget.productId.toString());
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  height: 50,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(60),
+                      color: Colors.green),
+                  child: tap == true
+                      ? const SizedBox(
+                          height: 25,
+                          width: 25,
+                          child: CircularProgressIndicator(color: Colors.white))
+                      : const Text(
+                          "Add To Cart",
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white),
+                        ),
+                ),
+              ),
+            ),
+            // w(10),
+            // Expanded(
+            //   child: GestureDetector(
+            //     onTap: () {
+            //       Navigator.push(
+            //         context,
+            //         MaterialPageRoute(builder: (context) => CartNew()),
+            //       );
+            //     },
+            //     child: Container(
+            //       alignment: Alignment.center,
+            //       height: 50,
+            //       decoration: BoxDecoration(
+            //           borderRadius: BorderRadius.circular(60),
+            //           color: Colors.blue),
+            //       child: const Text(
+            //         "Go to Card",
+            //         style: TextStyle(
+            //             fontSize: 16,
+            //             fontWeight: FontWeight.w600,
+            //             color: Colors.white),
+            //       ),
+            //     ),
+            //   ),
+            // )
+          ],
         ),
       ),
       body: Container(
