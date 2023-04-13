@@ -175,8 +175,9 @@ class _SignupState extends State<Signup> {
                       ),
                     ),
                   ),
+                  h(10),
                   SizedBox(
-                    width: 200,
+
                     child: ElevatedButton(
                       onPressed: () {
                         _getCurrentPosition();
